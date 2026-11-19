@@ -25,6 +25,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify private source release access token
+        shell: bash
+        env:
+          ATGV_SOURCE_READ_TOKEN: ${{ secrets.ATGV_SOURCE_READ_TOKEN }}
+        run: |
+          if [[ -z "${ATGV_SOURCE_READ_TOKEN}" ]]; then
+            echo "::error title=Missing private-source read token::Set Actions secret ATGV_SOURCE_READ_TOKEN with Contents: Read access to aidilazharo/aiatech-assist."
+            {
+              echo '### Public ATGV release mirror blocked'
+              echo 'The private source release cannot be read without the ATGV_SOURCE_READ_TOKEN repository Actions secret.'
+              echo 'Configure a fine-grained token limited to aidilazharo/aiatech-assist with Contents: Read, then rerun this workflow.'
+              echo 'The public mirror GITHUB_TOKEN already has Contents: Write and must not be used to read the private source.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
       - name: Copy and verify the latest public ATGV release
         env:
           ATGV_RELEASE_KIND: extension
