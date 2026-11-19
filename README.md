@@ -5,3 +5,25 @@ Verified ATGV AIATECH Assist VSIX packages and SHA-256 checksums are available u
 Published packages are mirrored from the verified source release after build checks pass.
 
 ATGV extension update discovery uses this public distribution repository; the development source repository is not included in the release lookup list.
+
+## Automated release sync
+
+The `Publish public ATGV extension releases` GitHub Actions workflow copies the
+newest **verified** VSIX and matching SHA-256 checksum from the private source
+repository. It runs every 15 minutes and can also be started using
+**Actions → Publish public ATGV extension releases → Run workflow**.
+
+**One-time repository secret required:** In
+`aidilazharo/extension` open **Settings → Secrets and variables → Actions →
+New repository secret**, and add `ATGV_SOURCE_READ_TOKEN`.
+
+Use a fine-grained GitHub token authorized only for the private
+`aidilazharo/aiatech-assist` repository with **Contents: Read-only** permission
+and access approved by the repository owner (if required). No workflow needs
+a token hardcoded in source, bundled in the VSIX, or displayed in diagnostic
+logs. The public repository's own GitHub Actions token already provides
+**Contents: Write** for publishing.
+
+Without the private source secret, GitHub returns HTTP 404 and release sync
+stops safely. No older release is republished, and ATGV never downgrades an
+installed extension because the mirror is behind.
