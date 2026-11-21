@@ -35,3 +35,5 @@ The Extension source component restarts at semantic version `0.0.0`. This reposi
 The source v0.0.1 verified build includes an empty VS Code description, 14 `.memory` JSON decision categories, strict 0.0.0–99.99.99 version increments and the single overwritten `RELEASE.md`.
 
 Extension v0.0.3 contains no `.memory` files in the VSIX or source ZIP. The source-only memory rule is stored in Git under `.memory/release-management.json`, and the release's extracted archive tests passed.
+
+ATGV Extension v0.0.4 provides unified sanitized error logging in `.atgv/src/error-logs`, Git source checkouts in `.atgv/src/extension` and `.atgv/src/library`, and idle noon AI repair guarded by real GitHub PAT read/write verification. Published VSIX and source ZIPs exclude `.memory`.
